@@ -1,6 +1,9 @@
 # Data Folders
 MNIST_data/
 
+# Ckpt Folders
+model_ckpt/
+
 # Misc Folders
 .idea/
 __pycache__
