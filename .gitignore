@@ -1,0 +1,10 @@
+# Data Folders
+MNIST_data/
+
+# Misc Folders
+.idea/
+__pycache__
+
+# =========================
+# Operating System Files
+# =========================
