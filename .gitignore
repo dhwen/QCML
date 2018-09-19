@@ -6,7 +6,7 @@ model_ckpt/
 
 # Misc Folders
 .idea/
-__pycache__
+__pycache__/
 
 # =========================
 # Operating System Files

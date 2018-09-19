@@ -22,21 +22,21 @@ with tf.Session(graph=net.graph) as sess:
         saver.restore(sess, tf.train.latest_checkpoint(ckpt_path))
         print("Restored ckpt")
 
-    i = 0
-    num_epochs = np.power(10, 3)
-    for _ in range(num_epochs):
+    num_train_epochs = np.power(10, 3)
+	batch_size = 50
+	
+    for i in range(num_train_epochs):
 
-        batch = mnist.train.next_batch(50)
+        batch = mnist.train.next_batch(batch_size)
 
-        i = i + 1
         [opt, output, loss] = sess.run([net.opt, net.output, net.loss], feed_dict={net.x: batch[0], net.label: batch[1], net.bIsTrain: True})
         print('Epoch %d, training loss is %g' % (i, loss))
 
-        if i % 100 == 0:
+        if i % 99 == 0:
             train_accuracy = net.accuracy.eval(feed_dict={net.x: batch[0], net.label: batch[1], net.bIsTrain: False})
             print('step %d, training accuracy %g' % (i, train_accuracy))
 
-        if i % 500 == 0:
+        if i % 499 == 0:
             saver.save(sess, ckpt_path + "ConvNet.ckpt")
 
     test_accuracy = net.accuracy.eval(feed_dict={net.x: mnist.test.images, net.label: mnist.test.labels, net.bIsTrain: False})
