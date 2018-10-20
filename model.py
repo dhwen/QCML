@@ -16,13 +16,13 @@ class ConvNet:
         conv1 = self.ConvStack(inputs=self.input, nChannels=32, conv_filter_dim=[3,3], pool_filter_dim=[5,5], bIsTrain=self.bIsTrain, id=1)
         conv2 = self.ConvStack(inputs=conv1, nChannels=32, conv_filter_dim=[3,3], pool_filter_dim=[5,5], bIsTrain=self.bIsTrain, id=2)
         conv3 = self.ConvStack(inputs=conv2, nChannels=32, conv_filter_dim=[3,3], pool_filter_dim=[5,5],bIsTrain=self.bIsTrain, id=3)
-        conv3_flat = tf.reshape(conv3, [-1, np.prod(self.conv3.get_shape().as_list()[1:])])
-        self.dense = tf.layers.dense(conv3_flat, units=10, name="Dense1")
-        self.output = tf.nn.softmax(logits=self.dense, name="Softmax")
+        conv3_flat = tf.reshape(conv3, [-1, np.prod(conv3.get_shape().as_list()[1:])])
+        dense = tf.layers.dense(conv3_flat, units=10, name="Dense1")
+        self.output = tf.nn.softmax(logits=dense, name="Output")
 
     def build_backprop(self):
         self.label = tf.placeholder(dtype=tf.float32, shape=(None, 10), name="Label")
-        self.loss = tf.losses.softmax_cross_entropy(onehot_labels=self.label, logits=self.dense)
+        self.loss = tf.losses.softmax_cross_entropy(onehot_labels=self.label, logits=self.output)
         self.optimizer = tf.train.AdamOptimizer(learning_rate=0.001, beta1=0.9, beta2=0.999, epsilon=1e-08, use_locking=False, name='Adam')
         self.opt = self.optimizer.minimize(loss=self.loss)
 
