@@ -13,11 +13,13 @@ class ConvNet:
             self.build_eval()
 
     def build_model(self):
-        conv1 = self.ConvStack(inputs=self.input, nChannels=32, conv_filter_dim=[3,3], pool_filter_dim=[5,5], bIsTrain=self.bIsTrain, id=1)
-        conv2 = self.ConvStack(inputs=conv1, nChannels=32, conv_filter_dim=[3,3], pool_filter_dim=[5,5], bIsTrain=self.bIsTrain, id=2)
-        conv3 = self.ConvStack(inputs=conv2, nChannels=32, conv_filter_dim=[3,3], pool_filter_dim=[5,5],bIsTrain=self.bIsTrain, id=3)
-        conv3_flat = tf.reshape(conv3, [-1, np.prod(conv3.get_shape().as_list()[1:])])
-        dense = tf.layers.dense(conv3_flat, units=10, name="Dense1")
+        conv1 = self.ConvStack(inputs=self.input, nChannels=16, conv_filter_dim=[3,3], pool_filter_dim=[5,5], bIsTrain=self.bIsTrain, id=1)
+        conv2 = self.ConvStack(inputs=conv1, nChannels=16, conv_filter_dim=[3,3], pool_filter_dim=[5,5], bIsTrain=self.bIsTrain, id=2)
+        conv3 = self.ConvStack(inputs=conv2, nChannels=16, conv_filter_dim=[3,3], pool_filter_dim=[5,5],bIsTrain=self.bIsTrain, id=3)
+		conv4 = self.ConvStack(inputs=conv2, nChannels=16, conv_filter_dim=[3,3], pool_filter_dim=[5,5],bIsTrain=self.bIsTrain, id=4)
+		conv5 = self.ConvStack(inputs=conv2, nChannels=16, conv_filter_dim=[3,3], pool_filter_dim=[5,5],bIsTrain=self.bIsTrain, id=5)
+        conv_flat = tf.reshape(conv5, [-1, np.prod(conv3.get_shape().as_list()[1:])])
+        dense = tf.layers.dense(conv_flat, units=10, name="Dense1")
         self.output = tf.nn.softmax(logits=dense, name="Output")
 
     def build_backprop(self):
