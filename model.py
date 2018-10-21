@@ -36,5 +36,5 @@ class ConvNet:
             pooling = tf.layers.max_pooling2d(inputs=conv, pool_size=pool_filter_dim, strides=[1, 1], name="Pooling")
             relu = tf.nn.relu(features=pooling, name="Relu")
             bn = tf.layers.batch_normalization(inputs=relu, name="BN")
-            output = tf.layers.dropout(inputs=bn, rate=0.8, training=bIsTrain, name="Dropout")
+            output = tf.layers.dropout(inputs=bn, rate=0.5, training=bIsTrain, name="Dropout")
         return output
