@@ -6,7 +6,7 @@ from dataloader import DataLoader
 
 ckpt_path = 'model_ckpt/'
 if not os.path.isdir(ckpt_path):
-	os.makedirs(ckpt_path)
+    os.makedirs(ckpt_path)
 
 loader = DataLoader()
 mnist = loader.loadMNIST()
@@ -23,21 +23,23 @@ with tf.Session(graph=net.graph) as sess:
     #    print("Restored ckpt")
 
     num_train_epochs = np.power(10, 3)
-    batch_size = 50
-	
+    batch_size = 100
+
     for i in range(num_train_epochs):
 
         batch = mnist.train.next_batch(batch_size)
 
-        [opt, output, loss] = sess.run([net.opt, net.output, net.loss], feed_dict={net.x: batch[0], net.label: batch[1], net.bIsTrain: True})
-        print('Epoch %d, training loss is %g' % (i, loss))
+        sess.run(net.opt, feed_dict={net.x: batch[0], net.label: batch[1], net.bIsTrain: True})
+
+        if (i + 1) % 10 == 0:
+            loss = sess.run(net.loss, feed_dict={net.x: batch[0], net.label: batch[1], net.bIsTrain: True})
+            print('Epoch %d, training loss is %g' % (i + 1, loss))
 
         if (i + 1) % 100 == 0:
-            train_accuracy = net.accuracy.eval(feed_dict={net.x: batch[0], net.label: batch[1], net.bIsTrain: False})
-            print('step %d, training accuracy %g' % (i, train_accuracy))
+            train_accuracy = sess.run(net.accuracy, feed_dict={net.x: batch[0], net.label: batch[1], net.bIsTrain: False})
+            test_accuracy = sess.run(net.accuracy, feed_dict={net.x: mnist.test.images, net.label: mnist.test.labels, net.bIsTrain: False})
+            print('step %d, training accuracy %g' % (i + 1, train_accuracy))
+            print('step %d, test accuracy %g' % (i + 1, test_accuracy))
 
         if (i + 1) % 500 == 0:
             saver.save(sess, ckpt_path + "ConvNet.ckpt")
-
-    test_accuracy = net.accuracy.eval(feed_dict={net.x: mnist.test.images, net.label: mnist.test.labels, net.bIsTrain: False})
-    print('step %d, test accuracy %g' % (i, test_accuracy))
