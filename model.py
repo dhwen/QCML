@@ -17,8 +17,7 @@ class ConvNet:
         conv2 = self.ConvStack(inputs=conv1, nChannels=32, id=2)
         conv3 = self.ConvStack(inputs=conv2, nChannels=32, id=3)
         conv4 = self.ConvStack(inputs=conv3, nChannels=64, id=4)
-        conv5 = self.ConvStack(inputs=conv4, nChannels=64, id=5)
-        conv_flat = tf.reshape(conv5, [-1, np.prod(conv5.get_shape().as_list()[1:])])
+        conv_flat = tf.reshape(conv4, [-1, np.prod(conv4.get_shape().as_list()[1:])])
         dense1 = tf.layers.dense(inputs=conv_flat, units=64, name="Dense1")
         dropout1 = tf.layers.dropout(inputs=dense1, rate=0.5, training=self.bIsTrain, name="Dropout")
         dense2 = tf.layers.dense(inputs=dropout1, units=10, name="Dense2")
@@ -34,8 +33,7 @@ class ConvNet:
         correct_prediction = tf.equal(tf.argmax(self.output, 1), tf.argmax(self.label, 1))
         self.accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
-    def ConvStack(self, inputs, nChannels, id, conv_filter_dim=[3,3], padding_type="SAME"):
-
+    def ConvStack(self, inputs, nChannels, id, conv_filter_dim=[3,3], padding_type="VALID"):
         with tf.variable_scope("ConvStack"+str(id)):
             conv = tf.layers.conv2d(inputs=inputs, filters=nChannels, kernel_size=conv_filter_dim, padding=padding_type, name="Conv")
             bn = tf.layers.batch_normalization(inputs=conv, name="BN")

@@ -23,7 +23,7 @@ with tf.Session(graph=net.graph) as sess:
     #    print("Restored ckpt")
 
     num_train_epochs = np.power(10, 3)
-    batch_size = 64
+    batch_size = 128
 
     for i in range(num_train_epochs):
 
