@@ -22,8 +22,8 @@ with tf.Session(graph=net.graph) as sess:
     #    saver.restore(sess, tf.train.latest_checkpoint(ckpt_path))
     #    print("Restored ckpt")
 
-    num_train_epochs = np.power(10, 4)
-    batch_size = 100
+    num_train_epochs = np.power(10, 3)
+    batch_size = 64
 
     for i in range(num_train_epochs):
 
