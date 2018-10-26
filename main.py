@@ -22,7 +22,7 @@ with tf.Session(graph=net.graph) as sess:
     #    saver.restore(sess, tf.train.latest_checkpoint(ckpt_path))
     #    print("Restored ckpt")
 
-    num_train_epochs = np.power(10, 3)
+    num_train_epochs = np.power(10, 4)
     batch_size = 100
 
     for i in range(num_train_epochs):
@@ -32,7 +32,7 @@ with tf.Session(graph=net.graph) as sess:
         sess.run(net.opt, feed_dict={net.x: batch[0], net.label: batch[1], net.bIsTrain: True})
 
         if (i + 1) % 10 == 0:
-            loss = sess.run(net.loss, feed_dict={net.x: batch[0], net.label: batch[1], net.bIsTrain: True})
+            loss = sess.run(net.loss, feed_dict={net.x: batch[0], net.label: batch[1], net.bIsTrain: False})
             print('Epoch %d, training loss is %g' % (i + 1, loss))
 
         if (i + 1) % 100 == 0:
